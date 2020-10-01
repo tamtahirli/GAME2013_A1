@@ -45,63 +45,35 @@ void StartScene::handleEvents()
 	}
 }
 
-void CreateBackground()
-{
-	/*TextureManager::Instance()->load("../Assets/textures/ship3.png","ship");
-
-	auto size = TextureManager::Instance()->getTextureSize("ship");
-	setWidth(size.x);
-	setHeight(size.y);
-
-	getTransform()->position = glm::vec2(400.0f, 300.0f);
-	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
-	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
-	getRigidBody()->isColliding = false;
-	setType(SHIP);
-
-	m_currentHeading = 0.0f; // current facing angle
-	m_currentDirection = glm::vec2(1.0f, 0.0f); // facing right
-	m_turnRate = 5.0f; // 5 degrees per frame*/
-
-	/*// alias for x and y
-	const auto x = getTransform()->position.x;
-	const auto y = getTransform()->position.y;
-
-	// draw the ship
-	TextureManager::Instance()->draw("ship", x, y, m_currentHeading, 255, true);*/
-
-	std::cout << "Loading background..." << "\n";
-
-	bool loaded = TextureManager::Instance()->load("../Assets/textures/background.png", "background");
-	TextureManager::Instance()->draw("background", 400.0f, 300.0f, 0.0f, 255, true);
-
-	std::string loadstr = loaded ? "successful" : "failed";
-
-	std::cout << "Loading background... " << loadstr << ".\n";
-
-}
-
 void StartScene::start()
 {
-	const SDL_Color blue = { 0, 0, 255, 255 };
-	m_pStartLabel = new Label("START SCENE", "Consolas", 80, blue, glm::vec2(400.0f, 40.0f));
+	addChild(new Button("../Assets/textures/background.png", "backgroundButton", BACKGROUND, glm::vec2(400.0f, 300.0f)));
+
+	const SDL_Color green = { 0, 100, 0, 255 };
+	const SDL_Color red = { 200, 0, 0, 255 };
+	const SDL_Color cyan = { 0, 200, 200, 255 };
+
+	m_pStartLabel = new Label("START SCENE", "Consolas", 80, red, glm::vec2(400.0f, 40.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);
 
-	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 40, blue, glm::vec2(400.0f, 120.0f));
+	m_pGroupMemberLabel = new Label("Tamerlan Tahirli - 101055392 -- Alexander Barnes - 101086806", "Consolas", 20, cyan, glm::vec2(400.0f, 130.0f));
+	m_pGroupMemberLabel->setParent(this);
+	addChild(m_pGroupMemberLabel);
+
+	m_pInstructionsLabel = new Label("Press Start or 1 to Play", "Consolas", 40, green, glm::vec2(400.0f, 200.0f));
 	m_pInstructionsLabel->setParent(this);
 	addChild(m_pInstructionsLabel);
 
 
 	m_pShip = new Ship();
 	m_pShip->getTransform()->position = glm::vec2(400.0f, 300.0f); 
-	addChild(m_pShip); 
+	addChild(m_pShip);
+
 
 	// Start Button
 	m_pStartButton = new Button();
 	m_pStartButton->getTransform()->position = glm::vec2(400.0f, 400.0f); 
-
-	CreateBackground();
 
 	m_pStartButton->addEventListener(CLICK, [&]()-> void
 	{

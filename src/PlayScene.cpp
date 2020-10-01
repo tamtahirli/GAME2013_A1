@@ -105,6 +105,8 @@ void PlayScene::handleEvents()
 
 void PlayScene::start()
 {
+	addChild(new Button("../Assets/textures/background.png", "backgroundButton", BACKGROUND, glm::vec2(400.0f, 300.0f)));
+
 	// Plane Sprite
 	m_pPlaneSprite = new Plane();
 	addChild(m_pPlaneSprite);
