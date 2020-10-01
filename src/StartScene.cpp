@@ -47,7 +47,7 @@ void StartScene::handleEvents()
 
 void StartScene::start()
 {
-	addChild(new Button("../Assets/textures/background.png", "backgroundButton", BACKGROUND, glm::vec2(400.0f, 300.0f)));
+	addChild(new Button("../Assets/textures/background.png", "background", BACKGROUND, glm::vec2(400.0f, 300.0f)));
 
 	const SDL_Color green = { 0, 100, 0, 255 };
 	const SDL_Color red = { 200, 0, 0, 255 };
@@ -66,9 +66,9 @@ void StartScene::start()
 	addChild(m_pInstructionsLabel);
 
 
-	m_pShip = new Ship();
-	m_pShip->getTransform()->position = glm::vec2(400.0f, 300.0f); 
-	addChild(m_pShip);
+	m_pWookie = new Wookie();
+	m_pWookie->getTransform()->position = glm::vec2(400.0f, 300.0f);
+	addChild(m_pWookie);
 
 
 	// Start Button

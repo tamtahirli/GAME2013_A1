@@ -48,7 +48,7 @@ void EndScene::handleEvents()
 
 void EndScene::start()
 {
-	addChild(new Button("../Assets/textures/background.png", "backgroundButton", BACKGROUND, glm::vec2(400.0f, 300.0f)));
+	addChild(new Button("../Assets/textures/background.png", "background", BACKGROUND, glm::vec2(400.0f, 300.0f)));
 
 	const SDL_Color blue = { 0, 0, 255, 255 };
 	m_label = new Label("END SCENE", "Dock51", 80, blue, glm::vec2(400.0f, 40.0f));

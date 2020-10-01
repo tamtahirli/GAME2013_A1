@@ -6,6 +6,7 @@
 #include "Plane.h"
 #include "Player.h"
 #include "Button.h"
+#include "Wookie.h"
 
 class PlayScene : public Scene
 {
@@ -22,8 +23,7 @@ public:
 private:
 	glm::vec2 m_mousePosition;
 
-	Plane* m_pPlaneSprite;
-	Player* m_pPlayer;
+	Wookie* m_pWookie;
 	bool m_playerFacingRight;
 
 	Button* m_pBackButton;
