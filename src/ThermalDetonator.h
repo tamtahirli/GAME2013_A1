@@ -3,11 +3,11 @@
 #include "DisplayObject.h"
 #include "TextureManager.h"
 
-class Wookie final : public DisplayObject
+class ThermalDetonator final : public DisplayObject
 {
 public:
-	Wookie();
-	~Wookie();
+	ThermalDetonator();
+	~ThermalDetonator();
 
 	// Inherited via GameObject
 	void draw() override;
@@ -19,7 +19,19 @@ public:
 	void moveForward();
 	void moveBack();
 
+	void addForce(glm::vec2 Amount);
+
 	void move();
+
+	bool doesUpdate = false; 
+
+	float Gravity = 0.8f;
+	
+	Uint64 NOW = SDL_GetPerformanceCounter();
+	Uint64 LAST = 0;
+	float deltaTime = 0;
+
+	glm::vec2 Force;
 
 	// getters
 	glm::vec2 getTargetPosition() const;

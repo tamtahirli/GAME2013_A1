@@ -4,7 +4,6 @@
 
 #include "Scene.h"
 #include "Label.h"
-#include "wookie.h"
 #include "Button.h"
 
 class StartScene final : public Scene
@@ -24,8 +23,6 @@ private:
 	Label* m_pStartLabel{};
 	Label* m_pGroupMemberLabel{};
 	Label* m_pInstructionsLabel{};
-
-	Wookie* m_pWookie{};
 
 	Button* m_pStartButton;
 };

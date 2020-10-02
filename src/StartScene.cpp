@@ -53,7 +53,7 @@ void StartScene::start()
 	const SDL_Color red = { 200, 0, 0, 255 };
 	const SDL_Color cyan = { 0, 200, 200, 255 };
 
-	m_pStartLabel = new Label("START SCENE", "Consolas", 80, red, glm::vec2(400.0f, 40.0f));
+	m_pStartLabel = new Label("Wookie Throw Grenade", "Consolas", 60, red, glm::vec2(400.0f, 40.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);
 
@@ -66,10 +66,7 @@ void StartScene::start()
 	addChild(m_pInstructionsLabel);
 
 
-	m_pWookie = new Wookie();
-	m_pWookie->getTransform()->position = glm::vec2(400.0f, 300.0f);
-	addChild(m_pWookie);
-
+	addChild(new Button("../Assets/textures/wookie.png", "wookie", WOOKIE, glm::vec2(400.0f, 300.0f)));
 
 	// Start Button
 	m_pStartButton = new Button();

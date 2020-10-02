@@ -1,14 +1,14 @@
-#include "Wookie.h"
+#include "ThermalDetonator.h"
 #include "glm/gtx/string_cast.hpp"
 #include "PlayScene.h"
 #include "TextureManager.h"
 #include "Util.h"
 
-Wookie::Wookie() : m_maxSpeed(10.0f)
+ThermalDetonator::ThermalDetonator() : m_maxSpeed(10.0f)
 {
-	TextureManager::Instance()->load("../Assets/textures/wookie.png", "wookie");
+	TextureManager::Instance()->load("../Assets/textures/detonator.png", "ThermalDetonator");
 
-	auto size = TextureManager::Instance()->getTextureSize("wookie");
+	auto size = TextureManager::Instance()->getTextureSize("ThermalDetonator");
 	setWidth(size.x);
 	setHeight(size.y);
 
@@ -16,7 +16,7 @@ Wookie::Wookie() : m_maxSpeed(10.0f)
 	getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	getRigidBody()->isColliding = false;
-	setType(WOOKIE);
+	setType(THERMALDETONATOR);
 
 	m_currentHeading = 0.0f; // current facing angle
 	m_currentDirection = glm::vec2(1.0f, 0.0f); // facing right
@@ -24,31 +24,35 @@ Wookie::Wookie() : m_maxSpeed(10.0f)
 }
 
 
-Wookie::~Wookie()
+ThermalDetonator::~ThermalDetonator()
 = default;
 
-void Wookie::draw()
+void ThermalDetonator::draw()
 {
 	// alias for x and y
 	const auto x = getTransform()->position.x;
 	const auto y = getTransform()->position.y;
 
-	// draw the wookie
-	TextureManager::Instance()->draw("wookie", x, y, m_currentHeading, 255, true);
+	// draw the ThermalDetonator
+	TextureManager::Instance()->draw("ThermalDetonator", x, y, m_currentHeading, 255, true);
 }
 
 
-void Wookie::update()
+void ThermalDetonator::update()
 {
-	move();
-	m_checkBounds();
+	NOW = SDL_GetPerformanceCounter();
+	deltaTime = (double)((NOW - LAST) * 1000 / (double)SDL_GetPerformanceFrequency());
+	deltaTime /= 1000;
+	LAST = NOW;
+	if(doesUpdate) move();
+	//m_checkBounds();
 }
 
-void Wookie::clean()
+void ThermalDetonator::clean()
 {
 }
 
-void Wookie::turnRight()
+void ThermalDetonator::turnRight()
 {
 	m_currentHeading += m_turnRate;
 	if (m_currentHeading >= 360)
@@ -58,7 +62,7 @@ void Wookie::turnRight()
 	m_changeDirection();
 }
 
-void Wookie::turnLeft()
+void ThermalDetonator::turnLeft()
 {
 	m_currentHeading -= m_turnRate;
 	if (m_currentHeading < 0)
@@ -69,56 +73,65 @@ void Wookie::turnLeft()
 	m_changeDirection();
 }
 
-void Wookie::moveForward()
+void ThermalDetonator::moveForward()
 {
 	getRigidBody()->velocity = m_currentDirection * m_maxSpeed;
 }
 
-void Wookie::moveBack()
+void ThermalDetonator::moveBack()
 {
 	getRigidBody()->velocity = m_currentDirection * -m_maxSpeed;
 }
 
-void Wookie::move()
+void ThermalDetonator::addForce(glm::vec2 Amount)
 {
-	getTransform()->position += getRigidBody()->velocity;
-	getRigidBody()->velocity *= 0.9f;
+	Force += Amount;
 }
 
-glm::vec2 Wookie::getTargetPosition() const
+void ThermalDetonator::move()
+{
+	getRigidBody()->acceleration = glm::vec2(0.0f, Gravity);
+	//getRigidBody()->acceleration += Force / getRigidBody()->mass;
+	getRigidBody()->velocity += getRigidBody()->acceleration;
+	getTransform()->position += getRigidBody()->velocity * deltaTime;
+	//Force = glm::vec2(0.0f, 0.0f);
+	//getRigidBody()->velocity *= 0.9f;
+}
+
+glm::vec2 ThermalDetonator::getTargetPosition() const
 {
 	return m_targetPosition;
 }
 
-glm::vec2 Wookie::getCurrentDirection() const
+glm::vec2 ThermalDetonator::getCurrentDirection() const
 {
 	return m_currentDirection;
 }
 
-float Wookie::getMaxSpeed() const
+float ThermalDetonator::getMaxSpeed() const
 {
 	return m_maxSpeed;
 }
 
-void Wookie::setTargetPosition(glm::vec2 newPosition)
+void ThermalDetonator::setTargetPosition(glm::vec2 newPosition)
 {
 	m_targetPosition = newPosition;
 
 }
 
-void Wookie::setCurrentDirection(glm::vec2 newDirection)
+void ThermalDetonator::setCurrentDirection(glm::vec2 newDirection)
 {
 	m_currentDirection = newDirection;
 }
 
-void Wookie::setMaxSpeed(float newSpeed)
+void ThermalDetonator::setMaxSpeed(float newSpeed)
 {
 	m_maxSpeed = newSpeed;
 }
 
 
 
-void Wookie::m_checkBounds()
+void ThermalDetonator::m_checkBounds()
 {
 
 	if (getTransform()->position.x > Config::SCREEN_WIDTH)
@@ -143,7 +156,7 @@ void Wookie::m_checkBounds()
 
 }
 
-void Wookie::m_reset()
+void ThermalDetonator::m_reset()
 {
 	getRigidBody()->isColliding = false;
 	const int halfWidth = getWidth() * 0.5f;
@@ -152,12 +165,12 @@ void Wookie::m_reset()
 	getTransform()->position = glm::vec2(xComponent, yComponent);
 }
 
-void Wookie::m_changeDirection()
+void ThermalDetonator::m_changeDirection()
 {
 	const auto x = cos(m_currentHeading * Util::Deg2Rad);
 	const auto y = sin(m_currentHeading * Util::Deg2Rad);
 	m_currentDirection = glm::vec2(x, y);
 
-	glm::vec2 size = TextureManager::Instance()->getTextureSize("wookie");
+	glm::vec2 size = TextureManager::Instance()->getTextureSize("ThermalDetonator");
 }
 

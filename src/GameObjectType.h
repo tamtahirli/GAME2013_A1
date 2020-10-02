@@ -13,6 +13,8 @@ enum GameObjectType {
 	NEXT_BUTTON,
 	NUM_OF_TYPES,
 	BACKGROUND,
+	STORMTROOPERS,
+	THERMALDETONATOR,
 	WOOKIE
 };
 #endif /* defined (__GAME_OBJECT_TYPE__) */

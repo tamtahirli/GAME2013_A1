@@ -6,7 +6,7 @@
 #include "Plane.h"
 #include "Player.h"
 #include "Button.h"
-#include "Wookie.h"
+#include "ThermalDetonator.h"
 
 class PlayScene : public Scene
 {
@@ -23,11 +23,17 @@ public:
 private:
 	glm::vec2 m_mousePosition;
 
-	Wookie* m_pWookie;
+	ThermalDetonator* m_pThermalDetonator;
 	bool m_playerFacingRight;
 
 	Button* m_pBackButton;
 	Button* m_pNextButton;
+
+	Button* m_pStormTroopers;
+
+	bool Playing = false;
+
+	bool keyDown = false;
 };
 
 #endif /* defined (__PLAY_SCENE__) */
