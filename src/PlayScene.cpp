@@ -1,6 +1,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "EventManager.h"
+#include "IMGUI/imgui.h"
 
 PlayScene::PlayScene()
 {
@@ -28,13 +29,19 @@ void PlayScene::clean()
 void PlayScene::handleEvents()
 {
 	EventManager::Instance().update();
-	std::cout << m_pThermalDetonator->getTransform()->position.y << "\n";
 	if (m_pThermalDetonator->getTransform()->position.y >= m_pStormTroopers->getTransform()->position.y + 50.0f)
 	{
 		m_pThermalDetonator->getTransform()->position = glm::vec2(125.0f, 400.0f);
 		m_pThermalDetonator->getRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 		m_pThermalDetonator->doesUpdate = false;
+		SetText();
 	}
+
+	if (m_pThermalDetonator->doesUpdate)
+	{
+		SetText();
+	}
+
 	// handle player movement if no Game Controllers found
 	if (SDL_NumJoysticks() < 1)
 	{
@@ -46,8 +53,9 @@ void PlayScene::handleEvents()
 		{
 			if (keyDown && !m_pThermalDetonator->doesUpdate)
 			{
-				glm::vec2 distance = m_pStormTroopers->getTransform()->position - m_pThermalDetonator->getTransform()->position;
 
+				glm::vec2 distance = m_pStormTroopers->getTransform()->position - m_pThermalDetonator->getTransform()->position;
+				
 				float speed = 95.0f;
 				float gravityByDistance = m_pThermalDetonator->Gravity * distance.x;
 				float Equation = gravityByDistance / (speed * speed);
@@ -142,4 +150,68 @@ void PlayScene::start()
 	});
 
 	addChild(m_pNextButton);
+
+	const SDL_Color green = { 0, 100, 0, 255 };
+
+	std::string Text = "";
+	Text = "Mass: " + std::to_string(m_pThermalDetonator->getRigidBody()->mass);
+	MassLabel = new Label(Text, "Consolas", 15, green, glm::vec2(100.0f, 25.0f));
+	MassLabel->setParent(this);
+	addChild(MassLabel);
+
+	Text = "Velocity: " + std::to_string(magnitude(m_pThermalDetonator->getRigidBody()->velocity));
+	VelocityLabel = new Label(Text, "Consolas", 15, green, glm::vec2(100.0f, 50.0f));
+	VelocityLabel->setParent(this);
+	addChild(VelocityLabel);
+
+	Text = "Acceleration: " + std::to_string(magnitude(m_pThermalDetonator->getRigidBody()->acceleration));
+	AccelerationLabel = new Label(Text, "Consolas", 15, green, glm::vec2(100.0f, 75.0f));
+	AccelerationLabel->setParent(this);
+	addChild(AccelerationLabel);
+
+	Text = "Position (x, y): (" + std::to_string(m_pThermalDetonator->getTransform()->position.x) + ", " + std::to_string(m_pThermalDetonator->getTransform()->position.y) + ")";
+	PositionLabel = new Label(Text, "Consolas", 15, green, glm::vec2(175.0f, 100.0f));
+	PositionLabel->setParent(this);
+	addChild(PositionLabel);
+
+	Text = "Force: " + std::to_string(magnitude(m_pThermalDetonator->Force));
+	ForceLabel = new Label(Text, "Consolas", 15, green, glm::vec2(100.0f, 125.0f));
+	ForceLabel->setParent(this);
+	addChild(ForceLabel);
+
+	float distance = magnitude(m_pStormTroopers->getTransform()->position - m_pThermalDetonator->getTransform()->position);
+
+	Text = "Distance: " + std::to_string(distance);
+	DistanceLabel = new Label(Text, "Consolas", 15, green, glm::vec2(100.0f, 150.0f));
+	DistanceLabel->setParent(this);
+	addChild(DistanceLabel);
+}
+
+float PlayScene::magnitude(glm::vec2 vec)
+{
+	return sqrt(vec.x * vec.x + vec.y * vec.y);
+}
+
+void PlayScene::SetText()
+{
+	std::string Text = "";
+	Text = "Mass: " + std::to_string(m_pThermalDetonator->getRigidBody()->mass);
+	MassLabel->setText(Text);
+	Text = "Velocity: " + std::to_string(magnitude(m_pThermalDetonator->getRigidBody()->velocity));
+	VelocityLabel->setText(Text);
+	Text = "Acceleration: " + std::to_string(magnitude(m_pThermalDetonator->getRigidBody()->acceleration));
+	AccelerationLabel->setText(Text);
+	Text = "Position (x, y): (" + std::to_string(m_pThermalDetonator->getTransform()->position.x) + ", " + std::to_string(m_pThermalDetonator->getTransform()->position.y) + ")";
+	PositionLabel->setText(Text);
+	Text = "Force: " + std::to_string(magnitude(m_pThermalDetonator->Force));
+	ForceLabel->setText(Text);
+	float distance = magnitude(m_pStormTroopers->getTransform()->position - m_pThermalDetonator->getTransform()->position);
+	float myRadius = m_pThermalDetonator->getWidth() * 0.5f;
+	float otherRadius = m_pStormTroopers->getWidth() * 0.5f;
+	if (distance <= myRadius + otherRadius)
+	{
+		Text = "Distance: Colliding";
+	}
+	else Text = "Distance: " + std::to_string(distance);
+	DistanceLabel->setText(Text);
 }

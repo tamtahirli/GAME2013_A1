@@ -3,10 +3,9 @@
 #define __PLAY_SCENE__
 
 #include "Scene.h"
-#include "Plane.h"
-#include "Player.h"
 #include "Button.h"
 #include "ThermalDetonator.h"
+#include "Label.h"
 
 class PlayScene : public Scene
 {
@@ -34,6 +33,16 @@ private:
 	bool Playing = false;
 
 	bool keyDown = false;
+
+	Label* DistanceLabel{};
+	Label* MassLabel{};
+	Label* PositionLabel{};
+	Label* VelocityLabel{};
+	Label* AccelerationLabel{};
+	Label* ForceLabel{};
+
+	static float magnitude(glm::vec2 vec);
+	void SetText();
 };
 
 #endif /* defined (__PLAY_SCENE__) */
