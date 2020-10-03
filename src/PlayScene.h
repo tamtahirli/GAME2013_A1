@@ -41,6 +41,10 @@ private:
 	Label* AccelerationLabel{};
 	Label* ForceLabel{};
 
+	float Speed = 95.0f;
+	float StormTrooperDistance = 485.0f;
+	float Mass = 2.2f;
+
 	static float magnitude(glm::vec2 vec);
 	void SetText();
 };

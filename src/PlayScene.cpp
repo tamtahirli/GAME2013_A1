@@ -42,7 +42,6 @@ void PlayScene::handleEvents()
 		SetText();
 	}
 
-	// handle player movement if no Game Controllers found
 	if (SDL_NumJoysticks() < 1)
 	{
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
@@ -56,17 +55,16 @@ void PlayScene::handleEvents()
 
 				glm::vec2 distance = m_pStormTroopers->getTransform()->position - m_pThermalDetonator->getTransform()->position;
 				
-				float speed = 95.0f;
 				float gravityByDistance = m_pThermalDetonator->Gravity * distance.x;
-				float Equation = gravityByDistance / (speed * speed);
+				float Equation = gravityByDistance / (Speed * Speed);
 				float theta = 0.5 * glm::degrees(asin(Equation));
 
-				std::cout << "DIST: " << distance.x << " THETA: " << theta << "\n";
+				//std::cout << "DIST: " << distance.x << " THETA: " << theta << "\n";
 
 				glm::vec2 DegreeToVector = glm::vec2(cos(theta), -sin(theta));
 
-				std::cout << "Degree to vector: " << DegreeToVector.x << " y: " << DegreeToVector.y << "\n";
-				m_pThermalDetonator->getRigidBody()->velocity += DegreeToVector * (speed * 2);
+				//std::cout << "Degree to vector: " << DegreeToVector.x << " y: " << DegreeToVector.y << "\n";
+				m_pThermalDetonator->getRigidBody()->velocity += DegreeToVector * (Speed * 2);
 				m_pThermalDetonator->doesUpdate = true;
 			}
 			keyDown = false;
@@ -107,8 +105,10 @@ void PlayScene::start()
 	// Thermal Detonator Sprite
 	m_pThermalDetonator = new ThermalDetonator();
 	m_pThermalDetonator->getTransform()->position = glm::vec2(125.0f, 400.0f);
-	m_pThermalDetonator->getRigidBody()->mass = 2.2f;
+	m_pThermalDetonator->getRigidBody()->mass = Mass;
 	addChild(m_pThermalDetonator);//
+
+	m_pStormTroopers->getTransform()->position.x = m_pThermalDetonator->getTransform()->position.x + StormTrooperDistance;
 
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
