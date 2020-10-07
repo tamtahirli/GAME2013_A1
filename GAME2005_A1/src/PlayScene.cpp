@@ -85,6 +85,7 @@ void PlayScene::start()
 	m_pDetonator->getRigidBody()->mass = 2.2f;
 	m_pDetonator->pixelsPerMeter = 1.0f;
 	m_pDetonator->calculateTheta = true;
+	m_pDetonator->highThrow = true;
 
 	CreateLabels();
 
@@ -131,7 +132,7 @@ void PlayScene::start()
 
 	/* Instructions Label */
 	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas", 20.0f, { 255, 255, 255, 255 });
-	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
+	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 550.0f);
 
 	addChild(m_pInstructionsLabel);
 }
@@ -157,12 +158,15 @@ void PlayScene::GUI_Function()
 			float Equation = gravityByDistance / (Speed * Speed);
 			float theta = 0.5 * glm::degrees(asin(Equation));
 
-			std::cout << "DIST: " << distance.x << " THETA: " << theta << "\n";
+			if (m_pDetonator->highThrow)
+				theta = 90.0f - theta;
 
 			float cosTheta = cos(glm::radians(theta));
 			float sinTheta = sin(glm::radians(theta));
 
 			DegreeToVector = glm::vec2(cosTheta, -sinTheta);
+
+			std::cout << "DIST: " << distance.x << " THETA: " << theta << "\n";
 		}
 		else DegreeToVector = glm::vec2(cos(m_pDetonator->throwAngle), -sin(m_pDetonator->throwAngle));
 
@@ -190,24 +194,16 @@ void PlayScene::GUI_Function()
 	if (ImGui::SliderFloat("Storm Trooper Distance", &xPos, 125.0f, Config::SCREEN_WIDTH))
 		StormTrooperPos.x = 125.0f + xPos;
 
-	static float xThrowSpeed = 95.0f;
-	if (ImGui::SliderFloat("Throw Speed X", &xThrowSpeed, 0, 500))
-		Speed = xThrowSpeed;
+	static float throwSpeed = 95.0f;
+	if (ImGui::SliderFloat("Throw Speed", &throwSpeed, 0, 500))
+		Speed = throwSpeed;
 
-	bool canUserInputAngle;
-	ImGui::Checkbox("Input custom angle?", &canUserInputAngle);
+	ImGui::Checkbox("Calculate theta?", &m_pDetonator->calculateTheta);
 
-	if (canUserInputAngle)
-	{
-		float userInputAngle = 0.0f;
-		if (ImGui::SliderAngle("Set Angle", &userInputAngle, 0.0f, 90.0f))
-		{
-			m_pDetonator->calculateTheta = false;
-			m_pDetonator->throwAngle = userInputAngle;
-		}
-	}
+	if (!m_pDetonator->calculateTheta)
+		ImGui::SliderAngle("Set Angle", &m_pDetonator->throwAngle, 0.0f, 90.0f);
 	else
-		m_pDetonator->calculateTheta = true;
+		ImGui::Checkbox("Throw at high angle?", &m_pDetonator->highThrow);
 	
 	ImGui::End();
 

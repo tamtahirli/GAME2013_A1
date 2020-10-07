@@ -28,6 +28,7 @@ public:
 	glm::vec2 Gravity = glm::vec2(0, 9.8f);
 
 	bool calculateTheta;
+	bool highThrow;
 	float Speed;
 	float pixelsPerMeter;
 	float throwAngle;
