@@ -2,7 +2,6 @@
 #include <crtdbg.h>
 #include <iostream>
 #include <Windows.h>
-
 #include "Game.h"
 
 const int FPS = 60;
@@ -19,7 +18,7 @@ int main(int argc, char * args[])
 	freopen("CON", "w", stdout);
 
 
-	TheGame::Instance()->init("SDLEngine 0.21", 100, 100, 800, 600, false);
+	TheGame::Instance()->init("Throw Detonator Physics Simulation", 100, 100, 800, 600, false);
 
 	while (TheGame::Instance()->isRunning())
 	{

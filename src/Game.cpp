@@ -5,6 +5,7 @@
 #include "glm/gtx/string_cast.hpp"
 #include "Renderer.h"
 #include "EventManager.h"
+#include "IMGUI/imgui.h"
 #include "IMGUI_SDL/imgui_sdl.h"
 
 
@@ -55,6 +56,7 @@ bool Game::init(const char* title, const int x, const int y, const int width, co
 			
 			if (Renderer::Instance()->getRenderer() != nullptr) // render init success
 			{
+				//ImGuiSDL::Initialize(Renderer::Instance()->getRenderer(), width, height);
 				std::cout << "renderer creation success" << std::endl;
 				SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, 255);
 			}

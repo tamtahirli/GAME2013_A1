@@ -4,7 +4,6 @@
 #include "glm/gtx/string_cast.hpp"
 #include "EventManager.h"
 #include "Renderer.h"
-#include <IMGUI/imgui.h>
 
 StartScene::StartScene()
 {
