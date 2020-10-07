@@ -84,6 +84,7 @@ void PlayScene::start()
 	addChild(m_pDetonator);
 	m_pDetonator->getRigidBody()->mass = 2.2f;
 	m_pDetonator->pixelsPerMeter = 1.0f;
+	m_pDetonator->Gravity = glm::vec2(0, 9.8f);
 	m_pDetonator->calculateTheta = true;
 	m_pDetonator->highThrow = true;
 
