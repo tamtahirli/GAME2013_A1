@@ -87,6 +87,7 @@ void PlayScene::start()
 	m_pDetonator->calculateTheta = true;
 	m_pDetonator->highThrow = true;
 	m_pDetonator->Speed = 95.0f;
+	m_pDetonator->throwAngle = 0.0f;
 
 	CreateLabels();
 
