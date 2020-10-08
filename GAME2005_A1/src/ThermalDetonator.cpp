@@ -3,6 +3,7 @@
 #include "PlayScene.h"
 #include "TextureManager.h"
 #include "Util.h"
+#include "Game.h"
 
 ThermalDetonator::ThermalDetonator() : m_maxSpeed(10.0f)
 {
@@ -87,7 +88,8 @@ void ThermalDetonator::move()
 {
 	float deltaTime = 1.0f / 60.0f;
 
-	getRigidBody()->velocity += (getRigidBody()->acceleration + Gravity) * deltaTime;
+	getRigidBody()->acceleration = Gravity;
+	getRigidBody()->velocity += getRigidBody()->acceleration * deltaTime;
 	getTransform()->position += getRigidBody()->velocity * deltaTime * pixelsPerMeter;
 
 	//getRigidBody()->acceleration = glm::vec2(0.0f, Gravity);
@@ -97,13 +99,6 @@ void ThermalDetonator::move()
 
 	//Force = glm::vec2(0.0f, 0.0f);
 	//getRigidBody()->velocity *= 0.9f;
-
-	//deltaTime = 1.0f / 60.0f; // FPS
-	/*
-	accel = 0, 9.8
-	vel = accel * deltaTime
-	pos = velocity * deltaTime * pixelsPerMeter
-	float pixelsPerMeter = 1.0f;*/
 }
 
 glm::vec2 ThermalDetonator::getTargetPosition() const
