@@ -73,7 +73,6 @@ void PlayScene::start()
 
 	StormTrooperPos.x = 610.0f;
 	StormTrooperPos.y = 400.0f; //610.0f, 400.0f
-	Speed = 95.0f;
 
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
@@ -87,6 +86,7 @@ void PlayScene::start()
 	m_pDetonator->Gravity = glm::vec2(0, 9.8f);
 	m_pDetonator->calculateTheta = true;
 	m_pDetonator->highThrow = true;
+	m_pDetonator->Speed = 95.0f;
 
 	CreateLabels();
 
@@ -156,7 +156,7 @@ void PlayScene::GUI_Function()
 			glm::vec2 distance = StormTrooperPos.x - m_pDetonator->getTransform()->position;
 
 			float gravityByDistance = m_pDetonator->Gravity.y * distance.x;
-			float Equation = gravityByDistance / (Speed * Speed);
+			float Equation = gravityByDistance / (m_pDetonator->Speed * m_pDetonator->Speed);
 			float theta = 0.5 * glm::degrees(asin(Equation));
 
 			if (m_pDetonator->highThrow)
@@ -172,7 +172,7 @@ void PlayScene::GUI_Function()
 		else DegreeToVector = glm::vec2(cos(m_pDetonator->throwAngle), -sin(m_pDetonator->throwAngle));
 
 		std::cout << "Degree to vector: " << DegreeToVector.x << " y: " << DegreeToVector.y << "\n";
-		m_pDetonator->getRigidBody()->velocity = DegreeToVector * Speed;
+		m_pDetonator->getRigidBody()->velocity = DegreeToVector * m_pDetonator->Speed;
 		m_pDetonator->doesUpdate = true;
 		
 	}
@@ -197,7 +197,7 @@ void PlayScene::GUI_Function()
 
 	static float throwSpeed = 95.0f;
 	if (ImGui::SliderFloat("Throw Speed", &throwSpeed, 0, 500))
-		Speed = throwSpeed;
+		m_pDetonator->Speed = throwSpeed;
 
 	ImGui::Checkbox("Calculate theta?", &m_pDetonator->calculateTheta);
 
